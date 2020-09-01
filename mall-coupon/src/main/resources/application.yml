@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #MySQL配置
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root123456
+mybatis-plus:
+  # mapper扫描
+  mapper-locations: classpath:mapper/**/*.xml
+  global-config:
+    db-config:
+      # id 自增
+      id-type: auto
+server:
+  port: 7001
+
