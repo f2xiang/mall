@@ -23,6 +23,14 @@
     </properties>
 
     <dependencies>
+
+        <!-- common -->
+        <dependency>
+            <groupId>com.apple</groupId>
+            <artifactId>mall-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--openfeign-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
