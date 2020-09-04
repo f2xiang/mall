@@ -3,6 +3,7 @@ package com.apple.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.apple.product.feign.CouponFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,17 @@ import com.apple.common.utils.R;
 public class BrandController {
     @Autowired
     private BrandService brandService;
+
+    @Autowired
+    private CouponFeignService couponFeignService;
+
+    @RequestMapping("/test")
+    public R test(){
+        R productcoupon = couponFeignService.productcoupon();
+        return R.ok().put("page", productcoupon);
+    }
+
+
 
     /**
      * 列表
