@@ -5,11 +5,11 @@ spring:
         # 精确的路由放在高优先级，模糊的放在低优先级
         # 配置商品服务的路由
         - id: product_route
-          uri: lb://mall_route
+          uri: lb://mall-product
           predicates:
             - Path=/api/product/**
           filters:
-            - RewritePath=/api/product/(?<segment>/?.*), /$\{segment}
+            - RewritePath=/api/product/(?<segment>/?.*), /product/$\{segment}
 
         - id: admin_route
           uri: lb://renren-fast

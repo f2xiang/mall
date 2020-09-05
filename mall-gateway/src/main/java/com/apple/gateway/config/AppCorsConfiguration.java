@@ -30,7 +30,7 @@ public class AppCorsConfiguration {
         // 是否允许携带cookie
         configuration.setAllowCredentials(true);
 
-        source.registerCorsConfiguration("/*", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return new CorsWebFilter(source);
     }
 }

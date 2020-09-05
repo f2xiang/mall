@@ -2,10 +2,10 @@ package com.apple.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -42,6 +42,9 @@ public class CategoryEntity implements Serializable {
 	/**
 	 * $column.comments
 	 */
+	// 逻辑删除, 把状态更新为删除的状态
+
+	@TableLogic(value = "1", delval = "0")
 	private Integer showStatus;
 	/**
 	 * $column.comments

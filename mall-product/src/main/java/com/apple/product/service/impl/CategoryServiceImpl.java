@@ -69,4 +69,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 .collect(Collectors.toList());
     }
 
+
+
+    // 现在开发大部分都是逻辑删除
+    //      用一个标志位来区分
+
+    // deleteBatchIds为物理删除，删了就没了
+
+    @Override
+    public void removeMenuByIds(List<Long> ids) {
+        // TODO 1检查菜单有没有被其他的地方引用
+
+        // 2没有就删除
+        baseMapper.deleteBatchIds(ids);
+    }
+
 }
