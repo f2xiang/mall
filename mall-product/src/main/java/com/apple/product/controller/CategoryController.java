@@ -1,21 +1,16 @@
 package com.apple.product.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import com.apple.common.utils.R;
+import com.apple.product.entity.CategoryEntity;
+import com.apple.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apple.product.entity.CategoryEntity;
-import com.apple.product.service.CategoryService;
-import com.apple.common.utils.PageUtils;
-import com.apple.common.utils.R;
-
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -71,7 +66,9 @@ public class CategoryController {
     @RequestMapping("/update")
   //  @RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
+//		categoryService.updateById(category);
+        // 带上其他表的冗余字段
+		categoryService.updateDetail(category);
 
         return R.ok();
     }

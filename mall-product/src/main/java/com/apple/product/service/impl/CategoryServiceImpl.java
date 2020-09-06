@@ -1,10 +1,9 @@
 package com.apple.product.service.impl;
 
+import com.apple.product.service.CategoryBrandRelationService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,10 +15,16 @@ import com.apple.common.utils.Query;
 import com.apple.product.dao.CategoryDao;
 import com.apple.product.entity.CategoryEntity;
 import com.apple.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Resource
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -82,6 +87,27 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         // 2没有就删除
         baseMapper.deleteBatchIds(ids);
+    }
+
+    // 获取分类的完整路径
+    @Override
+    public List<Long> getCategoryPath(Long catelogId) { // 225
+        List<Long> list = new ArrayList<>();
+        list.add(catelogId);
+        CategoryEntity categoryEntity = baseMapper.selectById(catelogId); //225
+        while (categoryEntity.getParentCid() != 0) {
+            list.add(categoryEntity.getParentCid());
+            categoryEntity = baseMapper.selectById(categoryEntity.getParentCid() );
+        }
+        Collections.reverse(list);
+        return list;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateDetail(CategoryEntity category) {
+        updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
     }
 
 }

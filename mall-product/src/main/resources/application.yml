@@ -19,3 +19,6 @@ mybatis-plus:
       id-type: auto
 server:
   port: 10001
+logging:
+  level:
+    com.apple.product: debug

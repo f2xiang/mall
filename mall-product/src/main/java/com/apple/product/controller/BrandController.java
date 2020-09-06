@@ -1,21 +1,18 @@
 package com.apple.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import com.apple.product.feign.CouponFeignService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.apple.product.entity.BrandEntity;
-import com.apple.product.service.BrandService;
 import com.apple.common.utils.PageUtils;
 import com.apple.common.utils.R;
+import com.apple.common.valid.AddGroup;
+import com.apple.common.valid.UpdateGroup;
+import com.apple.product.entity.BrandEntity;
+import com.apple.product.feign.CouponFeignService;
+import com.apple.product.service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
@@ -67,10 +64,29 @@ public class BrandController {
 
     /**
      * 保存
+     * @Valid 校验注解
+     * BindingResult: 校验结果
+     * ------
+     * 通过全局异常进行处理
+     * -----
+     * @Validated 分组校验
      */
     @RequestMapping("/save")
   //  @RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
+//    public R save(@Valid @RequestBody BrandEntity brand /** BindingResult result **/){
+    public R save(@Validated(value = AddGroup.class) @RequestBody BrandEntity brand /** BindingResult result **/){
+        // 获取校验结果信息
+//        if (result.hasErrors()) {
+//            Map<String, String> map = new HashMap<>();
+//            result.getFieldErrors().forEach(item -> {
+//                // 错误信息
+//                String message = item.getDefaultMessage();
+//                // 错误字段
+//                String field = item.getField();
+//                map.put(field, message);
+//            });
+//            return R.error(400, "提交参数不合法").put("data", map);
+//        }
 		brandService.save(brand);
 
         return R.ok();
@@ -81,8 +97,10 @@ public class BrandController {
      */
     @RequestMapping("/update")
   //  @RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
+//		brandService.updateById(brand);
+        // 同时对冗余的数据做更新，比如改了品牌名称，其他表的冗余的品牌名做相应的修改
+		brandService.updateDetail(brand);
 
         return R.ok();
     }

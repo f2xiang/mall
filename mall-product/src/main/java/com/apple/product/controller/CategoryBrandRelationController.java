@@ -1,20 +1,13 @@
 package com.apple.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.apple.common.utils.R;
 import com.apple.product.entity.CategoryBrandRelationEntity;
 import com.apple.product.service.CategoryBrandRelationService;
-import com.apple.common.utils.PageUtils;
-import com.apple.common.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -31,14 +24,14 @@ public class CategoryBrandRelationController {
     private CategoryBrandRelationService categoryBrandRelationService;
 
     /**
-     * 列表
+     * 品牌下的分类列表
      */
-    @RequestMapping("/list")
+    @RequestMapping("/catelog/list")
  //   @RequiresPermissions("product:categorybrandrelation:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryBrandRelationService.queryPage(params);
+    public R list(@RequestParam Long brandId){
+        List<CategoryBrandRelationEntity> list = categoryBrandRelationService.getListByBrandId(brandId);
 
-        return R.ok().put("page", page);
+        return R.ok().put("page", list);
     }
 
 
@@ -59,7 +52,7 @@ public class CategoryBrandRelationController {
     @RequestMapping("/save")
   //  @RequiresPermissions("product:categorybrandrelation:save")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation){
-		categoryBrandRelationService.save(categoryBrandRelation);
+		categoryBrandRelationService.saveDetail(categoryBrandRelation);
 
         return R.ok();
     }
