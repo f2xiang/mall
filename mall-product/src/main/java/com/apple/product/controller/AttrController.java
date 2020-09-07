@@ -3,6 +3,7 @@ package com.apple.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.apple.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,10 +34,10 @@ public class AttrController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @RequestMapping("/base/list/{catelogId}")
  //   @RequiresPermissions("product:attr:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = attrService.queryPage(params);
+    public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
+        PageUtils page = attrService.queryPage(params, catelogId);
 
         return R.ok().put("page", page);
     }
@@ -58,8 +59,8 @@ public class AttrController {
      */
     @RequestMapping("/save")
   //  @RequiresPermissions("product:attr:save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
+    public R save(@RequestBody AttrVo attr){
+		attrService.saveAttr(attr);
 
         return R.ok();
     }
