@@ -45,9 +45,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public PageUtils queryPage(Map<String, Object> params, Long catelogId) {
         QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
+        Object type = params.get("type");
+        wrapper.eq("attr_type", type);
         // 查询所有
         if (catelogId != 0) {
-            wrapper.eq("catelog_id", catelogId);
+            wrapper.and(item -> item.eq("catelog_id", catelogId));
         }
 
         Object key = params.get("key");

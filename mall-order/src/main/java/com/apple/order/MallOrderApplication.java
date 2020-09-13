@@ -4,9 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @description:
- * @author: fengx
- * @create: 2020-08-30 23:06
+ * 使用ampq，RabbitAutoConfiguration自动生效
  */
 @SpringBootApplication
 public class MallOrderApplication {
