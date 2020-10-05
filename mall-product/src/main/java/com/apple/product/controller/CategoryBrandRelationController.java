@@ -34,6 +34,17 @@ public class CategoryBrandRelationController {
         return R.ok().put("page", list);
     }
 
+    /**
+     * 分类下的品牌列表
+     */
+    @RequestMapping("/brands/list")
+    //   @RequiresPermissions("product:categorybrandrelation:list")
+    public R getListByCatId(@RequestParam Long catId){
+        List<CategoryBrandRelationEntity> list = categoryBrandRelationService.getListByCatId(catId);
+
+        return R.ok().put("page", list);
+    }
+
 
     /**
      * 信息

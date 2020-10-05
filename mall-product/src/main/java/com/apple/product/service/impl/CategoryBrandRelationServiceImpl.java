@@ -75,4 +75,12 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         baseMapper.update(entity, new UpdateWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
     }
 
+    @Override
+    public List<CategoryBrandRelationEntity> getListByCatId(Long catId) {
+        return getBaseMapper().selectList(
+                new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId)
+        );
+
+    }
+
 }

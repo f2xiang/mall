@@ -42,6 +42,17 @@ public class AttrController {
         return R.ok().put("page", page);
     }
 
+    /**
+     * 销售属性列表
+     */
+    @RequestMapping("/sale/list/{catelogId}")
+ //   @RequiresPermissions("product:attr:list")
+    public R scaleList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
+        PageUtils page = attrService.queryScalePage(params, catelogId);
+
+        return R.ok().put("page", page);
+    }
+
 
     /**
      * 信息

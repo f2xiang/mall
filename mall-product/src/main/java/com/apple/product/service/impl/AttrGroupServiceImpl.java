@@ -5,14 +5,18 @@ import com.apple.common.utils.Query;
 import com.apple.product.dao.AttrGroupDao;
 import com.apple.product.entity.AttrGroupEntity;
 import com.apple.product.service.AttrGroupService;
+import com.apple.product.service.AttrService;
 import com.apple.product.service.CategoryService;
+import com.apple.product.vo.AttrGroupWithAttrVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,6 +24,9 @@ import java.util.Map;
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -63,6 +70,22 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         AttrGroupEntity entity = getById(attrGroupId);
         entity.setCatelogPath(categoryService.getCategoryPath(entity.getCatelogId()));
         return entity;
+    }
+
+    @Override
+    public Object getListByCategoryId(Long catId) {
+        QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("catelog_id", catId);
+        List<AttrGroupEntity> attrGroupEntities = baseMapper.selectList(wrapper);
+
+        return attrGroupEntities.stream().map(item -> {
+            // 创建vo
+            AttrGroupWithAttrVo attrGroupWithAttrVo = new AttrGroupWithAttrVo();
+            BeanUtils.copyProperties(item, attrGroupWithAttrVo);
+            attrGroupWithAttrVo.setAttrs(attrService.getListByAttrGroup(item.getAttrGroupId(), 0));
+            return attrGroupWithAttrVo;
+        });
+
     }
 
 }

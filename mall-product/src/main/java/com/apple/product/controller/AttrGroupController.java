@@ -44,6 +44,16 @@ public class AttrGroupController {
 
 
     /**
+     * 指定分类下的所有分组和关联的属性
+     */
+    @RequestMapping("/{catId}/withattr")
+    //   @RequiresPermissions("product:attrgroup:list")
+    public R list(@PathVariable("catId") Long catId){
+        Object list = attrGroupService.getListByCategoryId(catId);
+        return R.ok().put("data", list);
+    }
+
+    /**
      * 信息
      */
     @RequestMapping("/info/{attrGroupId}")

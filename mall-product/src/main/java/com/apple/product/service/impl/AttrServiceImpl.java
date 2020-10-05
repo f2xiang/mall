@@ -45,9 +45,47 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public PageUtils queryPage(Map<String, Object> params, Long catelogId) {
         QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("attr_type", 1); // 0 基本属性
+
         // 查询所有
         if (catelogId != 0) {
-            wrapper.eq("catelog_id", catelogId);
+            wrapper.and(item -> item.eq("catelog_id", catelogId));
+        }
+
+        Object key = params.get("key");
+        if (!StringUtils.isEmpty(key)) {
+            wrapper.and(item -> item.eq("attr_name", key));
+        }
+
+        IPage<AttrEntity> page = this.page(
+                new Query<AttrEntity>().getPage(params), wrapper
+        );
+        PageUtils pageUtils = new PageUtils(page);
+        List<AttrRespVo> voList = page.getRecords().stream().map(attrEntity -> {
+            // 创建vo
+            AttrRespVo attrRespVo = new AttrRespVo();
+            BeanUtils.copyProperties(attrEntity, attrRespVo);
+            // 分类名称
+            CategoryEntity categoryEntity = categoryDao.selectById(attrEntity.getCatelogId());
+            // 分组名称
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = attrAttrgroupRelationDao
+                    .selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attrRespVo.getAttrId()));
+            AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrAttrgroupRelationEntity.getAttrGroupId());
+            attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
+            attrRespVo.setCatelogName(categoryEntity.getName());
+            return attrRespVo;
+        }).collect(Collectors.toList());
+        pageUtils.setList(voList);
+        return pageUtils;
+    }
+
+    @Override
+    public PageUtils queryScalePage(Map<String, Object> params, Long catelogId) {
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("attr_type", 0); // 0 销售属性
+        // 查询所有
+        if (catelogId != 0) {
+            wrapper.and(item -> item.eq("catelog_id", catelogId));
         }
 
         Object key = params.get("key");
@@ -87,6 +125,18 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
         attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
         attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
+    }
+
+    @Override
+    public List<AttrEntity> getListByAttrGroup(Long attrGroupId, int type) {
+        // 分组名称
+        List<AttrAttrgroupRelationEntity> relationEntities = attrAttrgroupRelationDao
+                .selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrGroupId));
+
+        return relationEntities.stream()
+                .map(item -> baseMapper.selectById(item.getAttrId()))
+                .filter(item -> type !=item.getAttrType())
+                .collect(Collectors.toList());
     }
 
 }
