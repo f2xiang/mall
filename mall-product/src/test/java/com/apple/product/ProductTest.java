@@ -1,4 +1,4 @@
-package com.apple;
+package com.apple.product;
 
 import com.apple.product.entity.BrandEntity;
 import com.apple.product.service.BrandService;

@@ -32,11 +32,12 @@ public class AttrController {
     private AttrService attrService;
 
     /**
-     * 列表
+     * 规格属性列表
      */
     @RequestMapping("/base/list/{catelogId}")
  //   @RequiresPermissions("product:attr:list")
-    public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
+    public R baselist(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
+        params.put("type", 1);
         PageUtils page = attrService.queryPage(params, catelogId);
 
         return R.ok().put("page", page);
@@ -53,6 +54,18 @@ public class AttrController {
         return R.ok().put("page", page);
     }
 
+
+    /**
+     * 销售属性列表
+     */
+    @RequestMapping("/sale/list/{catelogId}")
+    //   @RequiresPermissions("product:attr:list")
+    public R salelist(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
+        params.put("type", 0);
+        PageUtils page = attrService.queryPage(params, catelogId);
+
+        return R.ok().put("page", page);
+    }
 
     /**
      * 信息

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.*;
@@ -22,6 +23,7 @@ import javax.validation.constraints.*;
  */
 @Data
 @TableName("pms_brand")
+@ToString
 public class BrandEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

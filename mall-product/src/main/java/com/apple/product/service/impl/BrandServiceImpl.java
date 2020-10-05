@@ -1,7 +1,11 @@
 package com.apple.product.service.impl;
 
 import com.apple.product.dao.CategoryBrandRelationDao;
+import com.apple.product.entity.AttrEntity;
 import com.apple.product.service.CategoryBrandRelationService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,12 +22,28 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
-
+@RabbitListener(queues = {"hello-java-queue"})
 @Service("brandService")
+@Slf4j
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
 
     @Resource
     private CategoryBrandRelationService categoryBrandRelationService;
+
+
+    // ------------mq listener test--------
+
+    @RabbitHandler
+    public void getMqMessage(BrandEntity brandEntity) {
+        log.info(brandEntity.toString());
+    }
+
+    @RabbitHandler
+    public void getMqMessage(AttrEntity attrEntity) {
+        log.info(attrEntity.toString());
+    }
+    // --------------mq listener test-----
+
 
 
     @Override
