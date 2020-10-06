@@ -55,17 +55,6 @@ public class AttrController {
     }
 
 
-    /**
-     * 销售属性列表
-     */
-    @RequestMapping("/sale/list/{catelogId}")
-    //   @RequiresPermissions("product:attr:list")
-    public R salelist(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
-        params.put("type", 0);
-        PageUtils page = attrService.queryPage(params, catelogId);
-
-        return R.ok().put("page", page);
-    }
 
     /**
      * 信息

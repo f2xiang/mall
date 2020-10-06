@@ -1,5 +1,6 @@
 package com.apple.coupon.service.impl;
 
+import com.apple.common.to.SkuFullReductionTo;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,6 +25,11 @@ public class SkuFullReductionServiceImpl extends ServiceImpl<SkuFullReductionDao
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void saveInfo(SkuFullReductionTo skuFullReductionTo) {
+        // TODO 打折信息保存
     }
 
 }

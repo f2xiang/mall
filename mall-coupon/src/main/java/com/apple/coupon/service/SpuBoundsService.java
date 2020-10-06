@@ -1,5 +1,6 @@
 package com.apple.coupon.service;
 
+import com.apple.common.to.SpuBoundsTo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.apple.common.utils.PageUtils;
 import com.apple.coupon.entity.SpuBoundsEntity;
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SpuBoundsService extends IService<SpuBoundsEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveBoundsInfo(SpuBoundsTo spuBoundsTo);
 }
 

@@ -1,5 +1,6 @@
 package com.apple.coupon.service;
 
+import com.apple.common.to.SkuFullReductionTo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.apple.common.utils.PageUtils;
 import com.apple.coupon.entity.SkuFullReductionEntity;
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SkuFullReductionService extends IService<SkuFullReductionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveInfo(SkuFullReductionTo skuFullReductionTo);
 }
 

@@ -3,6 +3,7 @@ package com.apple.coupon.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.apple.common.to.SkuFullReductionTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,6 +61,14 @@ public class SkuFullReductionController {
   //  @RequiresPermissions("coupon:skufullreduction:save")
     public R save(@RequestBody SkuFullReductionEntity skuFullReduction){
 		skuFullReductionService.save(skuFullReduction);
+
+        return R.ok();
+    }
+
+    @RequestMapping("/saveinfo")
+    //  @RequiresPermissions("coupon:skufullreduction:save")
+    public R saveinfo(@RequestBody SkuFullReductionTo skuFullReductionTo){
+        skuFullReductionService.saveInfo(skuFullReductionTo);
 
         return R.ok();
     }

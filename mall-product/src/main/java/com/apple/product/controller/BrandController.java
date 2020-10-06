@@ -28,14 +28,8 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @Autowired
-    private CouponFeignService couponFeignService;
 
-    @RequestMapping("/test")
-    public R test(){
-        R productcoupon = couponFeignService.productcoupon();
-        return R.ok().put("page", productcoupon);
-    }
+
 
 
 

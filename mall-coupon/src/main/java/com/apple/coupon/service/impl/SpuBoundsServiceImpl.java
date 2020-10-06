@@ -1,5 +1,7 @@
 package com.apple.coupon.service.impl;
 
+import com.apple.common.to.SpuBoundsTo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,6 +26,13 @@ public class SpuBoundsServiceImpl extends ServiceImpl<SpuBoundsDao, SpuBoundsEnt
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void saveBoundsInfo(SpuBoundsTo spuBoundsTo) {
+        SpuBoundsEntity spuBoundsEntity = new SpuBoundsEntity();
+        BeanUtils.copyProperties(spuBoundsTo, spuBoundsEntity);
+        save(spuBoundsEntity);
     }
 
 }
