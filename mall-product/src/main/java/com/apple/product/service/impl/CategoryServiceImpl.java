@@ -1,6 +1,7 @@
 package com.apple.product.service.impl;
 
 import com.apple.product.service.CategoryBrandRelationService;
+import com.apple.product.vo.Catalog2Vo;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -108,6 +109,47 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public void updateDetail(CategoryEntity category) {
         updateById(category);
         categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+    }
+
+    @Override
+    public List<CategoryEntity> getLevel1CategoryList() {
+        return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
+    }
+
+    @Override
+    public Map<Long, Object> getCategoryJson() {
+        // 所有分类数据
+        List<CategoryEntity> allCategorys = baseMapper.selectList(null);
+
+        // 一级分类
+        List<CategoryEntity> category1List = getListByParentCid(allCategorys, 0);
+
+        return category1List.stream().collect(Collectors.toMap(CategoryEntity::getCatId, item -> {
+            // 根据一级分类去查二级和三级
+            List<CategoryEntity> category2List = getListByParentCid(allCategorys, item.getCatId());
+
+            return category2List.stream().map(category2item -> {
+                // 获取三级的分类
+                List<CategoryEntity> category3List = getListByParentCid(allCategorys, category2item.getCatId());
+
+                // 封装三级的分类到二级分类
+                return new Catalog2Vo(
+                        item.getCatId(),
+                        category2item.getCatId(),
+                        category2item.getName(),
+                        category3List == null? null : category3List.stream().map(category3item -> new Catalog2Vo.Catalog3Vo(category2item.getCatId(), category3item.getCatId(), category3item.getName())).collect(Collectors.toList())
+                );
+            }).collect(Collectors.toList());
+        }));
+    }
+
+    /**
+     * 在list里挑选parentId 为 catId的数据
+     * @param allCategorys 所有的分类数据
+     * @param catId 数据筛选的条件 pid 为这个值
+     */
+    private List<CategoryEntity> getListByParentCid(List<CategoryEntity> allCategorys, long catId) {
+        return allCategorys.stream().filter(item -> item.getParentCid() == catId).collect(Collectors.toList());
     }
 
 }

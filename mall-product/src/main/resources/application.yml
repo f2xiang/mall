@@ -12,6 +12,8 @@ spring:
         server-addr: localhost:8848
 
    # rabbitmq 配置
+  thymeleaf:
+    cache: false
 #  rabbitmq:
 #    addresses: 192.168.91.128
 #    port: 5672

@@ -25,5 +25,9 @@ public interface CategoryService extends IService<CategoryEntity> {
     List<Long> getCategoryPath(Long catelogId);
 
     void updateDetail(CategoryEntity category);
+
+    List<CategoryEntity> getLevel1CategoryList();
+
+    Map<Long, Object> getCategoryJson();
 }
 
