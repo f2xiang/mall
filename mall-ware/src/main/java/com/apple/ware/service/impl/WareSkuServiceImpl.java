@@ -26,4 +26,9 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         return new PageUtils(page);
     }
 
+    @Override
+    public void reduce(String skuId) {
+        this.baseMapper.reduceBySkuId(skuId);
+    }
+
 }

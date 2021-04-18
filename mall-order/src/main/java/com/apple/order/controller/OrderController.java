@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.apple.order.entity.OrderEntity;
+import com.apple.order.feign.WareFeignService;
 import com.apple.order.service.OrderService;
+import com.apple.order.vo.OrderWithItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,10 +28,12 @@ import com.apple.common.utils.R;
  * @date 2021-04-18 19:11:46
  */
 @RestController
-@RequestMapping("coupon/omsorder")
+@RequestMapping("order/order")
 public class OrderController {
     @Autowired
-    private OrderService omsOrderService;
+    private OrderService orderService;
+    @Autowired
+    private WareFeignService wareFeignService;
 
     /**
      * 列表
@@ -37,7 +41,7 @@ public class OrderController {
     @RequestMapping("/list")
  //   @RequiresPermissions("coupon:omsorder:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = omsOrderService.queryPage(params);
+        PageUtils page = orderService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -49,18 +53,19 @@ public class OrderController {
     @RequestMapping("/info/{id}")
 //    @RequiresPermissions("coupon:omsorder:info")
     public R info(@PathVariable("id") Long id){
-		OrderEntity omsOrder = omsOrderService.getById(id);
+		OrderEntity omsOrder = orderService.getById(id);
 
         return R.ok().put("omsOrder", omsOrder);
     }
 
     /**
-     * 保存
+     * 下订单
      */
     @RequestMapping("/save")
   //  @RequiresPermissions("coupon:omsorder:save")
-    public R save(@RequestBody OrderEntity omsOrder){
-		omsOrderService.save(omsOrder);
+    public R save(@RequestBody OrderWithItemVo order){
+		orderService.save(order);
+		wareFeignService.reduce(order.getItems().get(0).getSkuId()+"");
 
         return R.ok();
     }
@@ -71,7 +76,7 @@ public class OrderController {
     @RequestMapping("/update")
   //  @RequiresPermissions("coupon:omsorder:update")
     public R update(@RequestBody OrderEntity omsOrder){
-		omsOrderService.updateById(omsOrder);
+		orderService.updateById(omsOrder);
 
         return R.ok();
     }
@@ -82,7 +87,7 @@ public class OrderController {
     @RequestMapping("/delete")
    // @RequiresPermissions("coupon:omsorder:delete")
     public R delete(@RequestBody Long[] ids){
-		omsOrderService.removeByIds(Arrays.asList(ids));
+		orderService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

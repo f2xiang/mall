@@ -86,4 +86,16 @@ public class WareSkuController {
         return R.ok();
     }
 
+
+    /**
+     * 减库存
+     */
+    @RequestMapping("/reduce")
+    // @RequiresPermissions("ware:waresku:delete")
+    public R reduce(@RequestBody String skuId){
+        wareSkuService.reduce(skuId);
+
+        return R.ok();
+    }
+
 }

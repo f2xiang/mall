@@ -14,4 +14,10 @@
     </resultMap>
 
 
+    <update id="reduceBySkuId">
+        update wms_ware_sku set stock_locked = stock_locked + 1, stock = stock - 1
+        where sku_id = #{skuId}
+    </update>
+
+
 </mapper>
