@@ -39,7 +39,7 @@ public class UndoLogEntity implements Serializable {
 	/**
 	 * $column.comments
 	 */
-	private Longblob rollbackInfo;
+	private byte rollbackInfo;
 	/**
 	 * $column.comments
 	 */
