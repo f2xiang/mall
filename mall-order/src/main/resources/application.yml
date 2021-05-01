@@ -10,16 +10,21 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+    # sentinel
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080
 
-    # rabbitmq 配置
   thymeleaf:
     cache: false
 
-  # redis 配置
+#  redis 配置
 #  redis:
 #    host: localhost
 #    port: 6379
 
+#  rabbitmq 配置
 #  rabbitmq:
 #    addresses: 192.168.91.128
 #    port: 5672
@@ -34,3 +39,9 @@ mybatis-plus:
       id-type: auto
 server:
   port: 9001
+# actuator暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
