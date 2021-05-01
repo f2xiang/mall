@@ -3,6 +3,7 @@ package com.apple.order.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.apple.order.entity.OrderEntity;
 import com.apple.order.feign.WareFeignService;
 import com.apple.order.service.OrderService;
@@ -40,6 +41,7 @@ public class OrderController {
      */
     @RequestMapping("/list")
  //   @RequiresPermissions("coupon:omsorder:list")
+    @SentinelResource
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = orderService.queryPage(params);
 
