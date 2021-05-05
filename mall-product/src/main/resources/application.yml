@@ -14,10 +14,16 @@ spring:
    # rabbitmq 配置
   thymeleaf:
     cache: false
-#  rabbitmq:
-#    addresses: 192.168.91.128
-#    port: 5672
-#    virtual-host: /
+
+  # redis 配置
+  redis:
+    host: localhost
+    port: 6379
+
+  rabbitmq:
+    addresses: localhost
+    port: 5672
+    virtual-host: /
 
 mybatis-plus:
   # mapper扫描
@@ -30,4 +36,4 @@ server:
   port: 10001
 logging:
   level:
-    com.apple.product: debug
+    com.apple.product: info
